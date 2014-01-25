@@ -52,12 +52,13 @@
                 </section>
 
                 <section>
-                    <h2>Installation</h2>
+                    <h2>Laravel 4.1 Installer</h2>
                     <p><pre><code contenteditable class="bash">
 curl http://laravel.com/laravel.phar > laravel.phar
 sudo mv laravel.phar /usr/local/bin/laravel
 sudo chmod 777 /usr/local/bin/laravel
                     </code></pre></p>
+                    <p>No longer need to use composer</p>
                 </section>
 
                 <!-- Example of nested vertical slides -->
@@ -80,11 +81,24 @@ chmod -R 777 app/storage
                     </section>
                     <section>
                         <h2>Jeffery Way Generators</h2>
-                        <p></p>
+                        <p><pre><code contenteditable class="php">
+// composer.json
+"require": {
+    "laravel/framework": "4.1.*"
+},
+"require-dev":{
+    "way/generators": "dev-master",
+    "phpunit/phpunit": "3.7.*",
+    "mockery/mockery": "0.7.*"
+},
+                        </code></pre></p>
                     </section>
                     <section>
                         <h2>.editorconfig</h2>
-                        <p>https://github.com/sindresorhus/editorconfig-sublime#readme</p>
+                        <p><pre><code contenteditable class="bash">
+curl https://gist.github.com/nickdenardis/8616001/raw/.editorconfig > .editorconfig
+                    </code></pre></p>
+                        <p><a href="https://github.com/sindresorhus/editorconfig-sublime">https://github.com/sindresorhus/editorconfig-sublime</a></p>
                     </section>
                     <section>
                         <h2>Install Clockwork Debugger</h2>
@@ -105,7 +119,10 @@ chmod -R 777 app/storage
                     </section>
                     <section>
                         <h2>Vagrant</h2>
-                        <p></p>
+                         <p><pre><code contenteditable class="bash">
+curl https://gist.github.com/nickdenardis/8615920/raw/Vagrantfile > Vagrantfile
+curl https://gist.github.com/nickdenardis/1a7c988e258d6d1affaf/raw/install.sh > install.sh
+                    </code></pre></p>
                     </section>
                     <section>
                         <h2>Sequel Pro</h2>
