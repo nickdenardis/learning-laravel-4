@@ -118,15 +118,62 @@ curl https://gist.github.com/nickdenardis/8616001/raw/.editorconfig > .editorcon
                         <p></p>
                     </section>
                     <section>
-                        <h2>Vagrant</h2>
+                        <h2>Vagrant Config</h2>
                          <p><pre><code contenteditable class="bash">
 curl https://gist.github.com/nickdenardis/8615920/raw/Vagrantfile > Vagrantfile
 curl https://gist.github.com/nickdenardis/1a7c988e258d6d1affaf/raw/install.sh > install.sh
                     </code></pre></p>
                     </section>
                     <section>
+                        <h2>Database Config</h2>
+                         <p><pre><code contenteditable class="php">
+<?php
+// app/config/local/database.php
+return array(
+    'connections' => array(
+        'mysql' => array(
+                'driver'    => 'mysql',
+                'host'      => 'localhost',
+                'database'  => 'project',
+                'username'  => 'root',
+                'password'  => 'local',
+                'charset'   => 'utf8',
+                'collation' => 'utf8_unicode_ci',
+                'prefix'    => ''
+            )
+    )
+);
+                    </code></pre></p>
+                    </section>
+                    <section>
+                        <h2>Local Development Config</h2>
+                        <p><pre><code contenteditable class="php">
+<?php
+// bootstrap/start.php
+$env = $app->detectEnvironment(function(){
+    return getenv('ENV') ?: 'local';
+});
+                    </code></pre></p>
+                    </section>
+                    <section>
                         <h2>Sequel Pro</h2>
-                        <p></p>
+                        <p><img src="images/sequel-pro.png" /></p>
+                        <p>Use the SSH Tunnel to connect to the database through Vagrant.</p>
+                    </section>
+                    <section>
+                        <h2>/etc/hosts</h2>
+                        <p><pre><code contenteditable class="bash">
+127.0.0.1  project.dev
+                    </code></pre></p>
+                    </section>
+                    <section>
+                        <h2>Vagrant Up</h2>
+                        <p><a href="http://vagrantup.com">Install Vagrant</a></p>
+                         <p><pre><code contenteditable class="bash">
+vagrant up
+vagrant ssh
+http://project.dev/
+                    </code></pre></p>
                     </section>
                 </section>
 
