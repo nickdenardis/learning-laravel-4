@@ -239,8 +239,8 @@ https://github.com/laracasts/Code-With-Intent
 * https://laracasts.com/lessons/laravel-remote-component
 * https://laracasts.com/lessons/artisan-tail
 
-
     # app/config/remote.php
+    <?php
     'connections' => array(
         'production' => array(
             'host'      => '',
