@@ -86,6 +86,8 @@ https://laracasts.com/lessons/environments-and-configuration
         "itsgoingd/clockwork": "1.*"
     },
 
+### Update the vendor directory
+
     composer update
 
 ## Configure the development packages
@@ -108,8 +110,11 @@ https://github.com/JeffreyWay/Laravel-4-Generators
         )
     );
 
-    # Publish the Clockwork config
+## Publish the Clockwork config
+
     php artisan config:publish itsgoingd/clockwork --path vendor/itsgoingd/clockwork/Clockwork/Support/Laravel/config/
+
+## Add the event to the base controller
 
     # app/controllers/BaseController.php
     class BaseController extends Controller {
