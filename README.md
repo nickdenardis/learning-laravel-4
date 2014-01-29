@@ -233,3 +233,42 @@ https://laracasts.com/lessons/psr-4-autoloading
 https://laracasts.com/lessons/coding-with-intent
 https://github.com/laracasts/Code-With-Intent
 
+## Remote server configuration
+
+* https://laracasts.com/lessons/laravel-remote-component
+* https://laracasts.com/lessons/artisan-tail
+
+    # app/config/remote.php
+
+    'connections' => array(
+        'production' => array(
+            'host'      => '',
+            'username'  => '',
+            'password'  => '',
+            'key'       => '',
+            'keyphrase' => '',
+            'root'      => '/var/www/',
+        ),
+    ),
+
+## Install Rocketeer for Deployment
+
+    composer require anahkiasen/rocketeer:dev-master
+
+### Add as a servie provider and alias
+
+    # app/config/app.php
+    'providers' => array(
+        ...
+        'Rocketeer\RocketeerServiceProvider',
+    ),
+    ...
+    'aliases' => array(
+        ...
+        'Rocketeer' => 'Rocketeer\Facades\Rocketeer',
+    ),
+
+### Publish the config
+
+    php artisan deploy:ignite
+
