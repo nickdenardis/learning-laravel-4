@@ -173,3 +173,46 @@ https://laracasts.com/lessons/environments-and-configuration
 ## Load up your base installation
 
     http://app.local/
+
+## PSR-4 auto loading
+
+https://laracasts.com/lessons/psr-4-autoloading
+
+    mkdir app/Acme
+
+### Add to the autoload
+
+    # composer.json
+    "autoload": {
+        ...
+        "psr-4": {
+            "Acme\\" : "app/Acme"
+        }
+    }
+
+### Recompile the autolaod file (and optimize)
+
+    composer dump-autoload -o
+
+## Create BaseModel for validation
+
+    # app/models/BaseModel.php
+    <?php
+    class BaseModel extends Eloquent {
+    }
+
+### Update any models to extend the base instead of Eloquent
+
+    # app/models/User.php
+    <?php
+    ...
+    class User extends BaseModel implements UserInterface, RemindableInterface {
+    ...
+
+
+
+## Validation
+
+https://laracasts.com/lessons/coding-with-intent
+https://github.com/laracasts/Code-With-Intent
+
