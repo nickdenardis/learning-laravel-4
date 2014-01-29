@@ -209,7 +209,24 @@ https://laracasts.com/lessons/psr-4-autoloading
     class User extends BaseModel implements UserInterface, RemindableInterface {
     ...
 
+## Folder Organization
 
+| Acme
+| -- Exceptions
+| -- | -- NonExistentHashException.php
+| -- | -- ValidationException.php
+| -- Repositories
+| -- | -- BackendServiceProvider.php
+| -- | -- DbLinkRepository.php
+| -- | -- LinkRepositoryInterface.php
+| -- Utilities
+| -- | -- UrlHasher.php
+| -- | -- UtilitiesServiceProvider.php
+| -- Validators
+| -- | -- LinkValidator.php
+| -- | -- ValidationException.php
+| -- | -- Validator.php
+| -- [ModelName].php
 
 ## Validation
 
