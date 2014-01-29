@@ -177,6 +177,7 @@ https://laracasts.com/lessons/environments-and-configuration
 ## PSR-4 auto loading
 
 https://laracasts.com/lessons/psr-4-autoloading
+https://laracasts.com/lessons/namespacing-primer
 
     mkdir app/Acme
 
@@ -239,7 +240,6 @@ https://github.com/laracasts/Code-With-Intent
 * https://laracasts.com/lessons/artisan-tail
 
     # app/config/remote.php
-
     'connections' => array(
         'production' => array(
             'host'      => '',
