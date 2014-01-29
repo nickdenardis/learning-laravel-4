@@ -3,7 +3,13 @@ learning-laravel-4
 
 Learning Laravel 4 for PHP people
 
-# Install the installer
+# Preinstallation
+
+* https://www.virtualbox.org/wiki/Downloads
+* http://www.vagrantup.com/downloads.html
+* http://www.getchef.com/chef/install/
+
+# Install the Laravel installer
 
 http://laravel.com/docs/installation#install-laravel
 
@@ -69,6 +75,10 @@ https://laracasts.com/lessons/environments-and-configuration
 ## Install some development packages
 
     # composer.json
+    "require": {
+        "laravel/framework": "4.1.*",
+        "doctrine/dbal": "~2.3"
+    },
     "require-dev":{
         "way/generators": "dev-master",
         "phpunit/phpunit": "3.7.*",
@@ -153,3 +163,6 @@ https://github.com/JeffreyWay/Laravel-4-Generators
     # /etc/paths
     vendor/bin
 
+## Load up your base installation
+
+    http://app.local/
