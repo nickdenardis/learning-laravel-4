@@ -74,6 +74,11 @@ https://laracasts.com/lessons/environments-and-configuration
 
 ## Install some development packages
 
+* https://github.com/itsgoingd/clockwork
+* https://github.com/JeffreyWay/Laravel-4-Generators
+* http://laravel.com/docs/testing
+* https://packagist.org/packages/doctrine/dbal (If renaming columns in migrations)
+
     # composer.json
     "require": {
         "laravel/framework": "4.1.*",
@@ -91,9 +96,6 @@ https://laracasts.com/lessons/environments-and-configuration
     composer update
 
 ## Configure the development packages
-
-https://github.com/itsgoingd/clockwork
-https://github.com/JeffreyWay/Laravel-4-Generators
 
     # app/config/local/app.php
     <?php
