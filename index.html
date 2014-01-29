@@ -191,6 +191,26 @@ sudo mv phpunit.phar /usr/local/bin/phpunit
                         </code></pre></p>
                     </section>
                     <section>
+                        <h1>Or.. Install PHPUnit</h1>
+                         <p><pre><code contenteditable class="json">
+// composer.json
+    "require": {
+        "laravel/framework": "4.1.*",
+        "doctrine/dbal": "~2.3"
+    },
+    "require-dev":{
+        "way/generators": "dev-master",
+        "phpunit/phpunit": "3.7.*",
+        "mockery/mockery": "0.7.*",
+        "itsgoingd/clockwork": "1.*"
+    },
+                        </code></pre></p>
+                        <p><pre><code contenteditable class="bash">
+sudo subl /etc/paths
+vendor/bin
+                        </code></pre></p>
+                    </section>
+                    <section>
                         <h1>Configure the Database</h1>
                         <p>Create a <code>/app/config/testing/database.php</code> file.</p>
                         <p><pre><code contenteditable class="php">
