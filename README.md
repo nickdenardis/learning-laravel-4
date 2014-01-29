@@ -5,6 +5,8 @@ Learning Laravel 4 for PHP people
 
 # Install the installer
 
+http://laravel.com/docs/installation#install-laravel
+
     curl http://laravel.com/laravel.phar > laravel.phar
     sudo mv laravel.phar /usr/local/bin/laravel
     sudo chmod 777 /usr/local/bin/laravel
@@ -20,6 +22,8 @@ Learning Laravel 4 for PHP people
     php artisan key:generate
 
 ## Install Vagrant the easy way
+
+https://github.com/ShawnMcCool/vagrant-chef
 
     git submodule add git@github.com:ShawnMcCool/vagrant-chef.git
     git submodule update --init --recursive
@@ -38,6 +42,8 @@ Learning Laravel 4 for PHP people
 
 ## Setup the local DB config
 
+https://laracasts.com/lessons/environments-and-configuration
+
     # bootstrap/start.php
     $env = $app->detectEnvironment(function(){
         return getenv('ENV') ?: 'local';
@@ -50,7 +56,7 @@ Learning Laravel 4 for PHP people
             'mysql' => array(
                 'driver'    => 'mysql',
                 'host'      => '10.10.10.10',
-                'database'  => 'cms_prod',
+                'database'  => 'db_name',
                 'username'  => 'root',
                 'password'  => 'password',
                 'charset'   => 'utf8',
@@ -59,3 +65,91 @@ Learning Laravel 4 for PHP people
             )
         )
     );
+
+## Install some development packages
+
+    # composer.json
+    "require-dev":{
+        "way/generators": "dev-master",
+        "phpunit/phpunit": "3.7.*",
+        "mockery/mockery": "0.7.*",
+        "itsgoingd/clockwork": "1.*"
+    },
+
+    composer update
+
+## Configure the development packages
+
+https://github.com/itsgoingd/clockwork
+https://github.com/JeffreyWay/Laravel-4-Generators
+
+    # app/config/local/app.php
+    <?php
+    // Local only configuration
+    return array(
+
+        'providers' => array(
+            'Clockwork\Support\Laravel\ClockworkServiceProvider',
+            'Way\Generators\GeneratorsServiceProvider'
+        ),
+
+        'aliases' => array(
+            'Clockwork' => 'Clockwork\Support\Laravel\Facade',
+        )
+    );
+
+    # Publish the Clockwork config
+    php artisan config:publish itsgoingd/clockwork --path vendor/itsgoingd/clockwork/Clockwork/Support/Laravel/config/
+
+    # app/controllers/BaseController.php
+    class BaseController extends Controller {
+        public function __construct(){
+            $this->beforeFilter(function()
+            {
+                Event::fire('clockwork.controller.start');
+            });
+
+            $this->afterFilter(function()
+            {
+                Event::fire('clockwork.controller.end');
+            });
+        }
+    ...
+
+    # app/start/local.php
+    // Clockwork logging for local only
+    function l($value) {
+        Clockwork::info($value);
+    }
+    function start($name, $description){
+        Clockwork::startEvent($name, $description);
+    }
+    function stop($name){
+        Clockwork::endEvent($name);
+    }
+
+    # app/start/production.php
+    // Clockwork functions so it doesnt throw error on prod
+    function l($value) {
+        return false;
+    }
+    function start($name, $description){
+        return false;
+    }
+    function stop($name){
+        return false;
+    }
+
+### Install the Clockwork Chrome extension
+
+    https://chrome.google.com/webstore/detail/clockwork/dmggabnehkmmfmdffgajcflpdjlnoemp?hl=en
+
+## Add an .editorconfig file
+
+    curl https://gist.github.com/nickdenardis/8616001/raw/.editorconfig > .editorconfig
+
+## Add the vendor/bin to your local PATH for phpunit
+
+    # /etc/paths
+    vendor/bin
+
