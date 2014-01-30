@@ -320,7 +320,7 @@ https://laracasts.com/lessons/laravel-and-gulp
 ### Install gulp  and plugins to the dev dependncies
 
     sudo npm install gulp --save-dev
-    sudo npm install --save-dev gulp-minify-css gulp-util gulp-notify gulp-ruby-sass gulp-autoprefixer gulp-coffee
+    sudo npm install --save-dev gulp-minify-css gulp-util gulp-notify gulp-ruby-sass gulp-autoprefixer gulp-coffee gulp-concat
 
 ### Create a gulpfile.js
 
@@ -394,6 +394,101 @@ https://laracasts.com/lessons/laravel-and-gulp
 ## Add a layouts file
 
     mkdir -p app/views/layouts/;touch app/views/layouts/master.blade.php
+
+## Add some basic layout
+
+    # master.blade.php
+    <!doctype html>
+    <!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+    <html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Project</title>
+        <link rel="stylesheet" href="/css/main.css" />
+
+        <script src="/js/custom.modernizr.js"></script>
+        <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.min.js"></script><![endif]-->
+    </head>
+    <body>
+    <nav class="top-bar" data-topbar>
+        <ul class="title-area">
+            <li class="name">
+                <h1><a href="/">Project Name</a></h1>
+            </li>
+            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </ul>
+
+        <section class="top-bar-section">
+            <!-- Right Nav Section -->
+
+
+            <!-- Left Nav Section -->
+            <ul class="left">
+            </ul>
+        </section>
+    </nav>
+
+    <section class="main-section">
+        @if (Session::get('flash_message'))
+        <div class="row">
+            <div class="large-12 columns">
+                <div data-alert class="alert-box success radius">
+                    {{ Session::get('flash_message') }}
+                    <a href="#" class="close">&times;</a>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <div class="row">
+            <div class="large-12 columns">
+                @yield('content')
+            </div>
+        </div>
+    </section>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    </body>
+    </html>
+
+## Setup Bower for frontend components
+
+    touch bower.json
+
+### Pull in Foundation
+
+    # bower.json
+    {
+      "name": "project",
+      "version": "0.0.0",
+      "homepage": "http://app.local/",
+      "authors": [
+        "Nick DeNardis <nick.denardis@gmail.com>"
+      ],
+      "description": "",
+      "main": "public/",
+      "keywords": [],
+      "private": true,
+      "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+      ],
+      "devDependencies": {
+        "foundation": "~5.0.3",
+        "foundation-icon-fonts": "zurb/foundation-icon-fonts"
+      }
+    }
+
+## Download the Bower components
+
+    bower install
+
+
 
 
 ## Log SQL queries
