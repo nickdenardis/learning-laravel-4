@@ -301,12 +301,7 @@ https://laracasts.com/lessons/test-databases-in-memory
 ### Install gulp  and plugins to the dev dependncies
 
     sudo npm install gulp --save-dev
-    sudo npm install gulp-minify-css --save-dev
-    sudo npm install gulp-util --save-dev
-    sudo npm install gulp-notify --save-dev
-    sudo npm install gulp-ruby-sass --save-dev
-    sudo npm install gulp-autoprefixer --save-dev
-    sudo npm install gulp-coffee --save-dev
+    sudo npm install --save-dev gulp-minify-css gulp-util gulp-notify gulp-ruby-sass gulp-autoprefixer gulp-coffee
 
 ### Create a gulpfile.js
 
