@@ -273,3 +273,17 @@ https://laracasts.com/lessons/artisan-tail
 
     php artisan deploy:ignite
 
+### Make appropriate changes to the config files
+
+    | app/config/packages/anahkiasen/rocketeer
+    | -- config.php
+    | -- hooks.php
+    | -- paths.php
+    | -- remote.php
+    | -- scm.php
+    | -- stages.php
+    | -- tasks.php
+
+## Testing
+
+https://laracasts.com/lessons/test-databases-in-memory
