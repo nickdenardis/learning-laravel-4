@@ -174,6 +174,23 @@ https://laracasts.com/lessons/environments-and-configuration
 
     http://app.local/
 
+## Add a pretty comprehensive .gitignore
+
+    # .gitignore
+    /bootstrap/compiled.php
+    /vendor
+    composer.phar
+    composer.lock
+    .env.local.php
+    .env.php
+    .DS_Store
+    Thumbs.db
+    .idea
+    .vagrant
+    .sass-cache
+    node_modules
+    bower_components
+
 ## PSR-4 auto loading
 
 https://laracasts.com/lessons/psr-4-autoloading
@@ -290,6 +307,8 @@ https://laracasts.com/lessons/test-databases-in-memory
 
 ## Install Gulp
 
+https://laracasts.com/lessons/laravel-and-gulp
+
     sudo npm install -g gulp
 
 ### Make a package.json file
@@ -367,6 +386,15 @@ https://laracasts.com/lessons/test-databases-in-memory
 
     mkdir -p app/assets/scss/;touch app/assets/scss/main.scss
     mkdir -p app/assets/coffee/;touch app/assets/coffee/main.coffee
+
+## Run Gulp to compile and watch
+
+    gulp
+
+## Add a layouts file
+
+    mkdir -p app/views/layouts/;touch app/views/layouts/master.blade.php
+
 
 ## Log SQL queries
 
