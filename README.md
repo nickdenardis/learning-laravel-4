@@ -315,6 +315,17 @@ https://laracasts.com/lessons/laravel-and-gulp
 
     # package.json
     {
+        "name": "project",
+        "version": "0.0.0",
+        "author": "Nick DeNardis <nick.denardis@gmail.com>",
+        "description": "",
+        "main": "./lib/http-server",
+        "repository": {
+            "type": "git",
+            "url": "https://github.com/nickdenardis/learning-laravel-4.git"
+        },
+        "devDependencies": {
+        }
     }
 
 ### Install gulp  and plugins to the dev dependncies
