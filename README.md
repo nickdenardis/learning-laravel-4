@@ -319,7 +319,7 @@ https://laracasts.com/lessons/laravel-and-gulp
         "version": "0.0.0",
         "author": "Nick DeNardis <nick.denardis@gmail.com>",
         "description": "",
-        "main": "./lib/http-server",
+        "main": "/public",
         "repository": {
             "type": "git",
             "url": "https://github.com/nickdenardis/learning-laravel-4.git"
@@ -331,7 +331,7 @@ https://laracasts.com/lessons/laravel-and-gulp
 ### Install gulp  and plugins to the dev dependncies
 
     sudo npm install gulp --save-dev
-    sudo npm install --save-dev gulp-minify-css gulp-util gulp-notify gulp-ruby-sass gulp-autoprefixer gulp-coffee gulp-concat
+    sudo npm install --save-dev gulp-minify-css gulp-util gulp-notify gulp-ruby-sass gulp-autoprefixer gulp-jshint gulp-concat gulp-livereload gulp-rename gulp-uglify
 
 ### Create a gulpfile.js
 
@@ -341,8 +341,11 @@ https://laracasts.com/lessons/laravel-and-gulp
     var notify = require('gulp-notify');
     var sass = require('gulp-ruby-sass');
     var autoprefix = require('gulp-autoprefixer');
-    var minifyCSS = require('gulp-minify-css')
-    var coffee = require('gulp-coffee');
+    var minifyCSS = require('gulp-minify-css');
+    var jshint = require('gulp-jshint');
+    var concat = require('gulp-concat');
+    var rename = require('gulp-rename');
+    var uglify = require('gulp-uglify');
     var exec = require('child_process').exec;
     var sys = require('sys');
 
@@ -352,11 +355,17 @@ https://laracasts.com/lessons/laravel-and-gulp
     // Which directory should Sass compile to?
     var targetCSSDir = 'public/css';
 
-    // Where do you store your CoffeeScript files?
-    var coffeeDir = 'app/assets/coffee';
+    // Where do you store your js files?
+    var jsDir = 'app/assets/js';
 
     // Which directory should CoffeeScript compile to?
     var targetJSDir = 'public/js';
+
+    // Bower Dir
+    var bowerDir = 'bower_components';
+
+    // Foundation JS Dir
+    var foundationJsDir = bowerDir + '/foundation/js/foundation';
 
 
     // Compile Sass, autoprefix CSS3,
@@ -369,11 +378,20 @@ https://laracasts.com/lessons/laravel-and-gulp
             .pipe(notify('CSS minified'))
     });
 
-    // Handle CoffeeScript compilation
-    gulp.task('js', function () {
-        return gulp.src(coffeeDir + '/**/*.coffee')
-            .pipe(coffee().on('error', gutil.log))
+    // Compile all the JS files
+    gulp.task('scripts', function() {
+        return gulp.src([foundationJsDir + '/foundation.js',
+                        foundationJsDir + '/foundation.topbar.js',
+                        foundationJsDir + '/foundation.offcanvas.js',
+                        foundationJsDir + '/foundation.alert.js',
+                         jsDir + '/**/*.js'])
+            .pipe(jshint())
+            .pipe(jshint.reporter('default'))
+            .pipe(concat('main.js'))
+            .pipe(rename({suffix: '.min'}))
+            .pipe(uglify())
             .pipe(gulp.dest(targetJSDir))
+            .pipe(notify({ message: 'Scripts compiled' }));
     });
 
     // Run all PHPUnit tests
@@ -383,20 +401,36 @@ https://laracasts.com/lessons/laravel-and-gulp
         });
     });
 
+    // Move over the foundation conditional assets
+    gulp.task('moderizer-js', function() {
+        return gulp.src(bowerDir + '/foundation/js/vendor/modernizr.js')
+            .pipe(gulp.dest(targetJSDir))
+            .pipe(notify('Modernizr moved'))
+    });
+
     // Keep an eye on Sass, Coffee, and PHP files for changes...
     gulp.task('watch', function () {
         gulp.watch(sassDir + '/**/*.scss', ['css']);
-        gulp.watch(coffeeDir + '/**/*.coffee', ['js']);
+        gulp.watch(jsDir + '/**/*.js', ['scripts']);
         gulp.watch('app/**/*.php', ['phpunit']);
     });
 
     // What tasks does running gulp trigger?
-    gulp.task('default', ['css', 'js', 'phpunit', 'watch']);
+    gulp.task('default', ['css', 'scripts', 'moderizer-js', 'phpunit', 'watch']);
 
 ## Create the assets to get compiled
 
-    mkdir -p app/assets/scss/;touch app/assets/scss/main.scss
-    mkdir -p app/assets/coffee/;touch app/assets/coffee/main.coffee
+    mkdir -p app/assets/scss/;touch app/assets/scss/main.scss;touch app/assets/scss/_vars.scss
+    mkdir -p app/assets/js/;touch app/assets/js/main.js
+
+### Main.js
+
+    # app/assets/js/main.js
+    // Wait till the DOM is loaded
+    $(document).ready(function(){
+        // Start Foundation JS
+        $(document).foundation();
+    });
 
 ## Run Gulp to compile and watch
 
@@ -418,7 +452,7 @@ https://laracasts.com/lessons/laravel-and-gulp
         <title>Project</title>
         <link rel="stylesheet" href="/css/main.css" />
 
-        <script src="/js/custom.modernizr.js"></script>
+        <script src="/js/modernizr.js"></script>
         <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.min.js"></script><![endif]-->
     </head>
     <body>
