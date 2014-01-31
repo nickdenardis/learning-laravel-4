@@ -533,11 +533,79 @@ https://laracasts.com/lessons/laravel-and-gulp
     </body>
     </html>
 
-
-
-
 ## Log SQL queries
 
+    # app/routes.php
     DB::listen(function($sql){
         Log::info($sql);
     }):
+
+## Named routes
+
+    # app/routes.php
+    Route::get('/', array('as' => 'home', 'uses' => 'LinksController@create')); // PHP 5.3
+    Route::get('/', ['as' => 'home', 'uses' => 'LinksController@create']); // PHP 5.4
+
+## Generate a new Controller
+
+    php artisan generate:controller LinksController
+
+## Create the form
+
+    # app/views/links/create.blade.php
+    @extends('layouts.master')
+
+    @section('content')
+    <div class="link-creator-form">
+        <div class="row">
+            <div class="large-12 medium-12 small-12 columns">
+                <h2>Shorten URL</h2>
+                {{ Form::open(array('url' => 'links')) }}
+                    <fieldset>
+                        <legend>Create a go.wayne.edu/... URL </legend>
+
+                        <label>Full URL</label>
+                        <div class="row collapse">
+                            <div class="large-10 columns">
+                                {{ Form::text('url', null, array('class' => '', 'id' => 'url-field', 'placeholder' => 'http://...')) }}
+                                {{ $errors->first('url', '<small class="error">:message</small>') }}
+                            </div>
+                            <div class="large-2 columns">
+                                <button type="submit" class="button postfix radius">Create</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                {{ Form::close() }}
+            </div>
+        </div>
+    </div>
+    @stop
+
+## Create the destination for the form
+
+    Route::post('links', 'LinksController@store');
+
+## Edit the store method
+
+    # app/controllers/LinksController.php
+    public function store()
+    {
+        try
+        {
+            $hash = Little::make(Input::get('url'));
+        }
+        catch(ValidationException $e)
+        {
+            return Redirect::home()->withErrors($e->getErrors())->withInput();
+        }
+
+        return Redirect::home()->with(
+            array(
+                'flash_message' => 'Here you go!' . link_to($hash),
+                'hashed' => $hash;
+            )
+        );
+    }
+
+## Setup the database migration
+
