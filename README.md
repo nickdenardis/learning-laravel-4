@@ -305,6 +305,41 @@ https://laracasts.com/lessons/artisan-tail
 
 https://laracasts.com/lessons/test-databases-in-memory
 
+## Setup Bower for frontend components
+
+    touch bower.json
+
+### Pull in Foundation
+
+    # bower.json
+    {
+      "name": "project",
+      "version": "0.0.0",
+      "homepage": "http://app.local/",
+      "authors": [
+        "Nick DeNardis <nick.denardis@gmail.com>"
+      ],
+      "description": "",
+      "main": "public/",
+      "keywords": [],
+      "private": true,
+      "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+      ],
+      "devDependencies": {
+        "foundation": "~5.0.3",
+        "foundation-icon-fonts": "zurb/foundation-icon-fonts"
+      }
+    }
+
+## Download the Bower components
+
+    bower install
+
 ## Install Gulp
 
 https://laracasts.com/lessons/laravel-and-gulp
@@ -331,7 +366,7 @@ https://laracasts.com/lessons/laravel-and-gulp
 ### Install gulp  and plugins to the dev dependncies
 
     sudo npm install gulp --save-dev
-    sudo npm install --save-dev gulp-minify-css gulp-util gulp-notify gulp-ruby-sass gulp-autoprefixer gulp-jshint gulp-concat gulp-livereload gulp-rename gulp-uglify
+    sudo npm install --save-dev gulp-minify-css gulp-util gulp-notify gulp-ruby-sass gulp-autoprefixer gulp-jshint gulp-concat gulp-livereload gulp-rename gulp-uglify tiny-lr
 
 ### Create a gulpfile.js
 
@@ -497,41 +532,6 @@ https://laracasts.com/lessons/laravel-and-gulp
     <script src="/js/main.js"></script>
     </body>
     </html>
-
-## Setup Bower for frontend components
-
-    touch bower.json
-
-### Pull in Foundation
-
-    # bower.json
-    {
-      "name": "project",
-      "version": "0.0.0",
-      "homepage": "http://app.local/",
-      "authors": [
-        "Nick DeNardis <nick.denardis@gmail.com>"
-      ],
-      "description": "",
-      "main": "public/",
-      "keywords": [],
-      "private": true,
-      "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-      ],
-      "devDependencies": {
-        "foundation": "~5.0.3",
-        "foundation-icon-fonts": "zurb/foundation-icon-fonts"
-      }
-    }
-
-## Download the Bower components
-
-    bower install
 
 
 
