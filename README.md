@@ -301,6 +301,13 @@ https://laracasts.com/lessons/artisan-tail
     | -- stages.php
     | -- tasks.php
 
+## Actually deploy the project
+
+    rocketeer deploy:check
+    rocketeer deploy:setup
+    rocketeer deploy --on="dev"
+    rocketeer deploy --on="dev,production"
+
 ## Testing
 
 https://laracasts.com/lessons/test-databases-in-memory
@@ -609,3 +616,56 @@ https://laracasts.com/lessons/laravel-and-gulp
 
 ## Setup the database migration
 
+    php artisan generate:migration create_links_table --fields="url:string:unique, hash:string:unique"
+
+## Edit the migration file
+
+    https://laracasts.com/lessons/soft-deletions
+
+    <?php
+
+    use Illuminate\Database\Migrations\Migration;
+    use Illuminate\Database\Schema\Blueprint;
+
+    class CreateLinksTable extends Migration {
+
+        /**
+         * Run the migrations.
+         *
+         * @return void
+         */
+        public function up()
+        {
+            Schema::create('links', function(Blueprint $table) {
+                $table->increments('id');
+                $table->string('url')->unique();
+                $table->string('hash')->unique();
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+
+        /**
+         * Reverse the migrations.
+         *
+         * @return void
+         */
+        public function down()
+        {
+            Schema::drop('links');
+        }
+    }
+
+## Migrate the database
+
+    php artisan migrate
+
+## Create some seed data
+
+    https://laracasts.com/lessons/seeds-and-fakes
+
+    php artisan generate:seed ModelName
+
+## Create the ability to respond to a hashed URL
+
+    # app/routes.php
