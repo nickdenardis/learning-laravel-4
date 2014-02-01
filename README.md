@@ -766,7 +766,7 @@ TODO
 ## Let's add our exception class
 
     # app/Acme/Exceptions/NonExistentHashException.php
-    <?php namespace Waynestate\Exceptions;
+    <?php namespace Acme\Exceptions;
 
     class NonExistentHashException extends \Exception {}
 
@@ -870,7 +870,7 @@ We can setup a backend service provider to bind all of our repositories
 ## Because we are abstracting the Hashing functionality out we have to inject a new urlHasher utility dependancy
 
     #app/Acme/Shortener/LittleService.php
-    use Waynestate\Utilities\UrlHasher;
+    use Acme\Utilities\UrlHasher;
     ...
     private $urlHasher;
 
