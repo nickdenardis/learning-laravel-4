@@ -88,7 +88,8 @@ https://laracasts.com/lessons/environments-and-configuration
         "way/generators": "dev-master",
         "phpunit/phpunit": "3.7.*",
         "mockery/mockery": "0.7.*",
-        "itsgoingd/clockwork": "1.*"
+        "itsgoingd/clockwork": "1.*",
+        "fzaninotto/faker": "1.4.*@dev"
     },
 
 ### Update the vendor directory
@@ -244,7 +245,7 @@ https://laracasts.com/lessons/namespacing-primer
     | -- | -- LinkValidator.php
     | -- | -- ValidationException.php
     | -- | -- Validator.php
-    | -- [ModelName].php
+    | -- Object.php
 
 ## Validation
 
@@ -666,6 +667,176 @@ https://laracasts.com/lessons/laravel-and-gulp
 
     php artisan generate:seed ModelName
 
+### Add some fake data
+
+    https://github.com/fzaninotto/Faker
+
+TODO
+
+## Things needed to use Facades
+
+* Facade class itself
+* The underlying class
+* And a service provider
+
+    | Acme
+    | -- Shortener
+    | -- | -- LittleService.php
+    | -- | -- LittleServiceProvider.php
+    | -- | -- Facades
+    | -- | -- | -- Little.php
+
+### Little Service
+
+    # app/Acme/Shortener/LittleService.php
+    <?php namespace Acme\Shortener;
+
+    use Acme\Exceptions\NonExistentHashException;
+    use Acme\Repositories\LinkRepositoryInterface as LinkRepoInterface;
+
+    class LittleService {
+
+        protected $linkRepo;
+
+        public function __construct(LinkRepoInterface $linkRepo)
+        {
+            $this->linkRepo = $linkRepo;
+        }
+
+        public function make()
+        {
+
+        }
+
+        public function getUrlByHash($hash)
+        {
+            $link = $this->linkRepo->byHash($hash);
+
+            if ( ! $link) throw NonExistentHashException;
+
+            return $link->url;
+        }
+    }
+
+### Little Service Provider
+
+    # app/Acme/Shortener/LittleServiceProvider.php
+    <?php namespace Acme\Shortener;
+
+    use Illuminate\Support\ServiceProvider;
+
+    class LittleServiceProvider extends ServiceProvider {
+        public function register()
+        {
+            $this->app->bind('Little', 'Acme\Shortener\LittleService');
+        }
+    }
+
+### Little Facade
+
+    # app/Acme/Shortener/Facades/Little.php
+    <?php namespace Acme\Shortener\Facades;
+
+    use Illuminate\Support\Facades\Facade;
+
+    class Little extends Facade {
+        protected static function getFacadeAccessor()
+        {
+            return 'Little';
+        }
+    }
+
+## Now make sure to register the new Service Provider and Alias
+
+    # app/config/app.php
+    'providers' => array(
+        ...
+        'Acme\Shortener\LittleServiceProvider'
+    ),
+    'aliases' => array(
+    ...
+        'Little'          => 'Acme\Shortener\Facades\Little'
+    ),
+
+## Let's add our exception class
+
+    # app/Acme/Exceptions/NonExistentHashException.php
+    <?php namespace Waynestate\Exceptions;
+
+    class NonExistentHashException extends \Exception {}
+
+## In order to make it nice and testable we are going to use Repositories
+
+This is the contract that all implementations need to follow
+
+    # app/Acme/Repositories/LinkRepositoryInterface.php
+    <?php namespace Acme\Repositories;
+
+    interface LinkRepositoryInterface {
+        public function byHash($hash);
+    }
+
+## We have to create the model in order to interact with the database
+
+    php artisan generate:model Link
+
+## Now edit to guard against mass assignment
+
+    # app/models/Link.php
+    <?php
+
+    class Link extends Eloquent {
+        protected $fillable = array('url', 'hash');
+
+        public static $rules = array();
+    }
+
+## Now on to the actual implementation of the repository
+
+This is what actually does the work
+
+    # app/Acme/Repositories/DbLinkRepository.php
+    <?php namespace Acme\Repositories;
+
+    use Link;
+
+    class DbLinkRepository implements LinkRepositoryInterface {
+        public function byHash($hash)
+        {
+            return Link::whereHash($hash)->first();
+        }
+    }
+
+### In order to use this though we have to bind it
+
+We can setup a backend service provider to bind all of our repositories
+
+    # app/Acme/Repositories/BackendServiceProvider.php
+    <?php namespace Acme\Repositories;
+
+    use Illuminate\Support\ServiceProvider;
+
+    class BackendServiceProvider extends ServiceProvider {
+        public function register()
+        {
+            $this->app->bind(
+                'Acme\Repositories\LinkRepositoryInterface',
+                'Acme\Repositories\DbLinkRepository'
+            );
+        }
+    }
+
+### Then register that new service provider
+
+    # app/config/app.php
+    'providers' => array(
+        ...
+        'Acme\Repositories\BackendServiceProvider'
+    ),
+
+
+
 ## Create the ability to respond to a hashed URL
 
     # app/routes.php
+    Route::get('{hash}', 'LinksController@translateHash');
