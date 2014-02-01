@@ -855,7 +855,6 @@ We can setup a backend service provider to bind all of our repositories
         return $link ? $link->hash : $this->makeHash($url);
     }
     ...
-
     private function makeHash($url)
     {
         $hash = $this->urlHasher->make($url);
@@ -871,9 +870,8 @@ We can setup a backend service provider to bind all of our repositories
 ## Because we are abstracting the Hashing functionality out we have to inject a new urlHasher utility dependancy
 
     #app/Acme/Shortener/LittleService.php
-    /**
-     * @var UrlHasher
-     */
+    use Waynestate\Utilities\UrlHasher;
+    ...
     private $urlHasher;
 
     public function __construct(LinkRepoInterface $linkRepo, UrlHasher $urlHasher)
@@ -887,20 +885,9 @@ We can setup a backend service provider to bind all of our repositories
     # app/Acme/Utilities/UrlHasher.php
     <?php namespace Acme\Utilities;
 
-    /**
-     * Class UrlHasher
-     * @package Acme\Utilities
-     */
     class UrlHasher {
-        /**
-         * @var int
-         */
         protected $hashLength = 5;
 
-        /**
-         * @param $url
-         * @return string
-         */
         public function make($url){
             $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
