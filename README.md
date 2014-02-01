@@ -895,3 +895,120 @@ We can setup a backend service provider to bind all of our repositories
         }
     }
 
+## In order to be as flexible as possible, we will use a validation layer
+
+    | app/Acme/Validation
+    | -- ValidationException.php
+    | -- LinkValidator.php
+    | -- Validator.php
+
+### The validation exception
+
+    # app/Acme/Validation/ValidationException.php
+    <?php namespace Acme\Validation;
+
+    class ValidationException extends \Exception {
+
+        /**
+         * @var
+         */
+        protected $errors;
+
+        function __construct($errors)
+        {
+            $this->errors = $errors;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getErrors()
+        {
+            return $this->errors;
+        }
+    }
+
+### The link validator
+
+    # app/Acme/Validation/LinkValidator.php
+    <?php namespace Waynestate\Validation;
+
+    class LinkValidator extends Validator {
+        protected static $rules = array(
+            'url' =>  'required|url|unique:links,url',
+            'hash' => 'required|unique:links,hash',
+        );
+    }
+
+### The abstract link validator class
+
+    # app/Acme/Validation/Validator.php
+    <?php namespace Acme\Validation;
+
+    use Illuminate\Validation\Factory;
+
+    abstract class Validator {
+
+        protected $validator;
+
+        function __construct(Factory $validator)
+        {
+            $this->validator = $validator;
+        }
+
+        public function fire($data)
+        {
+            $validation = $this->validator->make($data);
+
+            if ($validation->fails()) throw new ValidationException($validation->messages());
+
+            return true;
+        }
+    }
+
+## Now we have to hook into that Event when the URL is about to be shortened
+
+    # app/start/global.php
+    /*
+    |--------------------------------------------------------------------------
+    | Register event listeners
+    |--------------------------------------------------------------------------
+    */
+
+    Event::listen('link.creating', 'Waynestate\Validation\LinkValidator@fire');
+
+## We can also add the list of already shortened URL's to the homepage
+
+    # app/controllers/LinksController.php
+    public function create()
+    {
+        $urls = Link::all();
+
+        return View::make('links.create', compact('urls'));
+    }
+
+    # app/views/links/create.blade.php
+    <h3>Already Shortened</h3>
+    @if (count($urls) > 0)
+        <ul>
+        @foreach($urls as $url)
+            <li>{{ $url->url }} - {{ link_to($url->hash) }}</li>
+        @endforeach
+        </ul>
+    @else
+        <p>Currently no shortened URL's.</p>
+    @endif
+
+## Let's also enable DB sessions
+
+    php artisan session:table
+    composer dump-autoload -o
+    php artisan migrate
+
+    # app/config/session.php
+    return array(
+        ...
+        'driver' => 'database',
+        'connection' => 'mysql',
+        ...
+    );
