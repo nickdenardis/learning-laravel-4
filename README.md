@@ -173,7 +173,12 @@ https://laracasts.com/lessons/environments-and-configuration
 
 ## Load up your base installation
 
+    vagrant up
     http://app.local/
+
+### When done suspend your Vagrant
+
+    vagrant suspend
 
 ## Add a pretty comprehensive .gitignore
 
@@ -712,7 +717,7 @@ TODO
         {
             $link = $this->linkRepo->byHash($hash);
 
-            if ( ! $link) throw NonExistentHashException;
+            if ( ! $link) throw new NonExistentHashException;
 
             return $link->url;
         }
@@ -834,9 +839,72 @@ We can setup a backend service provider to bind all of our repositories
         'Acme\Repositories\BackendServiceProvider'
     ),
 
-
-
 ## Create the ability to respond to a hashed URL
 
     # app/routes.php
     Route::get('{hash}', 'LinksController@translateHash');
+
+## Start out by creating the initial make functionality
+
+    # app/Acme/Shortener/LittleService.php
+    ...
+    public function make($url)
+    {
+        $link = $this->linkRepo->byUrl($url);
+
+        return $link ? $link->hash : $this->makeHash($url);
+    }
+    ...
+
+    private function makeHash($url)
+    {
+        $hash = $this->urlHasher->make($url);
+
+        $data = compact('url', 'hash');
+
+        \Event::fire('link.creating', array($data));
+        $this->linkRepo->create($data);
+
+        return $hash;
+    }
+
+## Because we are abstracting the Hashing functionality out we have to inject a new urlHasher utility dependancy
+
+    #app/Acme/Shortener/LittleService.php
+    /**
+     * @var UrlHasher
+     */
+    private $urlHasher;
+
+    public function __construct(LinkRepoInterface $linkRepo, UrlHasher $urlHasher)
+    {
+        $this->linkRepo = $linkRepo;
+        $this->urlHasher = $urlHasher;
+    }
+
+### Actually make the UrlHasher in a 'Utilities' folder
+
+    # app/Acme/Utilities/UrlHasher.php
+    <?php namespace Acme\Utilities;
+
+    /**
+     * Class UrlHasher
+     * @package Acme\Utilities
+     */
+    class UrlHasher {
+        /**
+         * @var int
+         */
+        protected $hashLength = 5;
+
+        /**
+         * @param $url
+         * @return string
+         */
+        public function make($url){
+            $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+            return substr(str_shuffle(str_repeat($pool, 5)), 0, $this->hashLength);
+        }
+    }
+
