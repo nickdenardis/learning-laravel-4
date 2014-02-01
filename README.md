@@ -670,13 +670,31 @@ https://laracasts.com/lessons/laravel-and-gulp
 
     https://laracasts.com/lessons/seeds-and-fakes
 
-    php artisan generate:seed ModelName
+    php artisan generate:seed Links
 
 ### Add some fake data
 
     https://github.com/fzaninotto/Faker
 
-TODO
+    # app/database/seeds/LinksTableSeeder.php
+    <?php
+    class LinksTableSeeder extends Seeder {
+
+        public function run()
+        {
+            // Uncomment the below to wipe the table clean before populating
+            DB::table('links')->truncate();
+
+            $faker = Faker\Factory::create();
+
+            foreach(range(1, 20) as $index){
+                Little::make($faker->url);
+            }
+        }
+
+    }
+
+
 
 ## Things needed to use Facades
 
@@ -1012,3 +1030,58 @@ We can setup a backend service provider to bind all of our repositories
         'connection' => 'mysql',
         ...
     );
+
+## Generate some seed data for local and dev testing
+
+    php artisan generate:seed Links
+
+## Now to make the homepage have sortable list
+
+    https://laracasts.com/lessons/sorting-tabular-data
+
+    # app/Acme/Repositories/LinkRepositoryInterface.php
+    <?php namespace Acme\Repositories;
+
+    interface LinkRepositoryInterface {
+        public function byHash($hash);
+        public function byUrl($url);
+        public function create(array $data);
+        public function getPaginated();
+    }
+
+    # app/Acme/Repositories/DbLinkRepository.php
+    ...
+    use Illuminate\Support\Facades\Config;
+    ...
+    public function getPaginated()
+    {
+        return Link::paginate(Config::get('view.pagination_count'));
+    }
+
+    # app/config/view.php
+    ...
+    'pagination_count' => 30,
+    ...
+
+    # app/controllers/LinksController.php
+    ...
+    public function create()
+    {
+        $urls = $this->linkRepo->getPaginated();
+
+        return View::make('links.create', compact('urls'));
+    }
+    ...
+
+    # app/views/links/create.blade.php
+    ...
+    @if (count($urls) > 0)
+        <ul>
+        @foreach($urls as $url)
+            <li>{{ $url->url }} - {{ link_to($url->hash) }}</li>
+        @endforeach
+        </ul>
+
+        {{ $urls->links() }}
+    @else
+    ...
