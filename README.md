@@ -1038,6 +1038,7 @@ We can setup a backend service provider to bind all of our repositories
 ## Now to make the homepage have sortable list
 
     https://laracasts.com/lessons/sorting-tabular-data
+    https://github.com/binarix/Laravel-Foundation-Pagination
 
     # app/Acme/Repositories/LinkRepositoryInterface.php
     <?php namespace Acme\Repositories;
@@ -1085,3 +1086,71 @@ We can setup a backend service provider to bind all of our repositories
         {{ $urls->links() }}
     @else
     ...
+
+## Move the text of the application to a language file
+
+    # app/lang/en/shortener.php
+    <?php
+
+    return array(
+
+        /*
+        |--------------------------------------------------------------------------
+        | Shortener Language Lines
+        |--------------------------------------------------------------------------
+        */
+
+        "action" => "Shorten URL",
+        "empty_list" => "Currently no shortened URL's.",
+    );
+
+    # app/views/links/create.blade.php
+     ...
+     <div class="large-12 medium-12 small-12 columns">
+        <h2>{{ Lang::get('shortener.action') }}</h2>
+        {{ Form::open(array('url' => 'links')) }}
+    ...
+
+## Use config files to store values
+
+    # app/config/shortener.php
+    <?php
+        return array(
+            /*
+            |--------------------------------------------------------------------------
+            | Shortener configuration values
+            |--------------------------------------------------------------------------
+            */
+
+            'url_length' => 5,
+        );
+
+### Use it in the project
+
+    # app/Acme/Utilities/UrlHasher.php
+    ...
+    function __construct($hashLength = null)
+    {
+        $this->hashLength = $hashLength ?: Config::get('shortener.url_length');
+    }
+    ...
+
+## Testing Utilities
+
+    # app/tests/unit/utilities/UrlHasherTest.php
+    <?php
+
+    class UrlHasherTest extends PHPUnit_Framework_TestCase {
+
+        public function test_hashes_url()
+        {
+            $hasher = new Waynestate\Utilities\UrlHasher(10);
+
+            $this->assertEquals(10, strlen($hasher->make('example.com')));
+        }
+
+    }
+
+## Testing Integration
+
+    # app/tests/integration/
