@@ -1135,6 +1135,24 @@ We can setup a backend service provider to bind all of our repositories
     }
     ...
 
+## Testing database, SQLLite in Memory
+
+    # app/config/testing/database.php
+    <?php
+    return array(
+
+        'default' => 'sqlite',
+
+        'connections' => array(
+
+            'sqlite' => array(
+                'driver'   => 'sqlite',
+                'database' => ':memory:',
+                'prefix'   => '',
+            ),
+        ),
+    );
+
 ## Testing Utilities
 
     # app/tests/unit/utilities/UrlHasherTest.php
