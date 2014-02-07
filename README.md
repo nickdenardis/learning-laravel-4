@@ -27,6 +27,10 @@ http://laravel.com/docs/installation#install-laravel
 
     php artisan key:generate
 
+## Initialize git
+
+    git init
+
 ## Install Vagrant the easy way
 
 https://github.com/ShawnMcCool/vagrant-chef
@@ -34,6 +38,28 @@ https://github.com/ShawnMcCool/vagrant-chef
     git submodule add git@github.com:ShawnMcCool/vagrant-chef.git
     git submodule update --init --recursive
     cp vagrant-chef/vagrant/vagrantfiles/Vagrantfile .
+
+## Add a pretty comprehensive .gitignore
+
+    # .gitignore
+    /bootstrap/compiled.php
+    /vendor
+    composer.phar
+    composer.lock
+    .env.local.php
+    .env.php
+    .DS_Store
+    Thumbs.db
+    .idea
+    .vagrant
+    .sass-cache
+    node_modules
+    bower_components
+
+## Commit the initial files to git
+
+    git add .
+    git commit -am "Initial import"
 
 ## Configure the Vagrant file
 
@@ -179,23 +205,6 @@ https://laracasts.com/lessons/environments-and-configuration
 ### When done suspend your Vagrant
 
     vagrant suspend
-
-## Add a pretty comprehensive .gitignore
-
-    # .gitignore
-    /bootstrap/compiled.php
-    /vendor
-    composer.phar
-    composer.lock
-    .env.local.php
-    .env.php
-    .DS_Store
-    Thumbs.db
-    .idea
-    .vagrant
-    .sass-cache
-    node_modules
-    bower_components
 
 ## PSR-4 auto loading
 
