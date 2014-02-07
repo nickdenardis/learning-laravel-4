@@ -61,17 +61,6 @@ https://github.com/ShawnMcCool/vagrant-chef
     git add .
     git commit -am "Initial import"
 
-## Configure the Vagrant file
-
-    "databases" => {
-        "create" => ["db_name"]
-    },
-
-## Add the local host info
-
-    # /etc/hosts
-    10.10.10.10 app.local
-
 ## Setup the local DB config
 
 https://laracasts.com/lessons/environments-and-configuration
@@ -98,6 +87,17 @@ https://laracasts.com/lessons/environments-and-configuration
         )
     );
 
+## Configure the Vagrant file
+
+    "databases" => {
+        "create" => ["db_name"]
+    },
+
+## Add the local host info
+
+    # /etc/hosts
+    10.10.10.10 app.local
+
 ## Install some development packages
 
 * https://github.com/itsgoingd/clockwork
@@ -120,7 +120,7 @@ https://laracasts.com/lessons/environments-and-configuration
 
 ### Update the vendor directory
 
-    composer update
+    composer install
 
 ## Configure the development packages
 
@@ -460,9 +460,11 @@ https://laracasts.com/lessons/laravel-and-gulp
 
     // Move over the foundation conditional assets
     gulp.task('moderizer-js', function() {
-        return gulp.src(bowerDir + '/foundation/js/vendor/modernizr.js')
+        return gulp.src([
+                bowerDir + '/foundation/js/vendor/modernizr.js',
+                bowerDir + 'foundation/js/vendor/fastclick.js'])
             .pipe(gulp.dest(targetJSDir))
-            .pipe(notify('Modernizr moved'))
+            .pipe(notify('Modernizr/Fastclick moved'))
     });
 
     // Keep an eye on Sass, Coffee, and PHP files for changes...
@@ -488,6 +490,34 @@ https://laracasts.com/lessons/laravel-and-gulp
         // Start Foundation JS
         $(document).foundation();
     });
+
+### Main.scss
+
+    # app/assets/scss/main.scss
+    $include-open-sans: false;
+
+    // Import Foundation Normalize
+    @import "../../../bower_components/foundation/scss/normalize";
+
+    // Import Foundation Global (Functions and Default settings)
+    @import "../../../bower_components/foundation/scss/foundation/components/global";
+
+    // Import Style Guide and Local Vars
+    @import "vars";
+
+    // Import Foundation Components
+    @import "../../../bower_components/foundation/scss/foundation/components/grid";
+    @import "../../../bower_components/foundation/scss/foundation/components/type";
+    @import "../../../bower_components/foundation/scss/foundation/components/buttons";
+    @import "../../../bower_components/foundation/scss/foundation/components/forms";
+    @import "../../../bower_components/foundation/scss/foundation/components/visibility";
+    @import "../../../bower_components/foundation/scss/foundation/components/top-bar";
+    @import "../../../bower_components/foundation/scss/foundation/components/offcanvas";
+    @import "../../../bower_components/foundation/scss/foundation/components/alert-boxes";
+    @import "../../../bower_components/foundation/scss/foundation/components/pagination";
+
+    // Import Foundation Icons
+    @import "../../../bower_components/foundation-icon-fonts/foundation-icons";
 
 ## Run Gulp to compile and watch
 
@@ -551,7 +581,8 @@ https://laracasts.com/lessons/laravel-and-gulp
     </section>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/fastclick.js"></script>
+    <script src="/js/main.min.js"></script>
     </body>
     </html>
 
