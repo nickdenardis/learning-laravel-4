@@ -1212,3 +1212,18 @@ We can setup a backend service provider to bind all of our repositories
 ## Testing Integration
 
     # app/tests/integration/
+
+    TODO: Complete this.
+
+# Adding Stats
+
+## Crteate the migration
+
+    https://laracasts.com/lessons/migrations-decoded
+    https://laracasts.com/lessons/foreign-key-constraints
+
+    php artisan generate:migration create_stats_table --fields="link_id:integer:unsigned, user_agent:string, params:string"
+
+### Modify the magration file
+
+    # app/database/migrations/....php
