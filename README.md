@@ -889,6 +889,13 @@ We can setup a backend service provider to bind all of our repositories
         }
     }
 
+### If you want to have a single instance of an implementation throughout your entire application you can use the 'singlton' binding
+
+    $this->app->singleton(
+                'Acme\Repositories\LinkRepositoryInterface',
+                'Acme\Repositories\DbLinkRepository'
+            );
+
 ### Then register that new service provider
 
     # app/config/app.php
@@ -1214,6 +1221,24 @@ We can setup a backend service provider to bind all of our repositories
     # app/tests/integration/
 
     TODO: Complete this.
+
+## Making PHPUnit work with PHPStorm
+
+    # Run -> Edit Configuration
+    Alt Config file: /Users/nickdenardis/Sites/go/phpunit.xml
+    Intrepretor options: -d auto_prepend_file=/Users/nickdenardis/Sites/go/vendor/autoload.php
+    Working directory: /Users/nickdenardis/Sites/go
+
+## Testing HTTP respones, difference in types
+
+    $crawler = $this->client->request('GET', '/'); // Symfony\Component\DomCrawler\Crawler
+    $response = $this->call('GET', '/'); // Illuminate\Http\Response
+
+## Test to ensure that a view has a given variable available
+
+    $this->assertViewHas('events');
+
+
 
 # Adding Stats
 
