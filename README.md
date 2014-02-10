@@ -38,6 +38,7 @@ https://github.com/ShawnMcCool/vagrant-chef
     git submodule add git@github.com:ShawnMcCool/vagrant-chef.git
     git submodule update --init --recursive
     cp vagrant-chef/vagrant/vagrantfiles/Vagrantfile .
+    vagrant box add bn-quantal64-lamp-2.4 http://big-name.s3.amazonaws.com/bn-quantal64-lamp-2.4.box
 
 ## Add a pretty comprehensive .gitignore
 
@@ -105,6 +106,7 @@ https://laracasts.com/lessons/environments-and-configuration
 * http://laravel.com/docs/testing
 * https://packagist.org/packages/doctrine/dbal (If renaming columns in migrations)
 
+```json
     # composer.json
     "require": {
         "laravel/framework": "4.1.*",
@@ -117,6 +119,7 @@ https://laracasts.com/lessons/environments-and-configuration
         "itsgoingd/clockwork": "1.*",
         "fzaninotto/faker": "1.4.*@dev"
     },
+```
 
 ### Update the vendor directory
 
