@@ -161,7 +161,8 @@ https://laracasts.com/lessons/environments-and-configuration
                 Event::fire('clockwork.controller.end');
             });
         }
-    ...
+        ...
+    }
 
     # app/start/local.php
     // Clockwork logging for local only
@@ -208,66 +209,6 @@ https://laracasts.com/lessons/environments-and-configuration
 ### When done suspend your Vagrant
 
     vagrant suspend
-
-## PSR-4 auto loading
-
-https://laracasts.com/lessons/psr-4-autoloading
-https://laracasts.com/lessons/namespacing-primer
-
-    mkdir app/Acme
-
-### Add to the autoload
-
-    # composer.json
-    "autoload": {
-        ...
-        "psr-4": {
-            "Acme\\" : "app/Acme"
-        }
-    }
-
-### Recompile the autolaod file (and optimize)
-
-    composer dump-autoload -o
-
-## Create BaseModel for validation
-
-    # app/models/BaseModel.php
-    <?php
-    class BaseModel extends Eloquent {
-    }
-
-### Update any models to extend the base instead of Eloquent
-
-    # app/models/User.php
-    <?php
-    ...
-    class User extends BaseModel implements UserInterface, RemindableInterface {
-    ...
-
-## Folder Organization
-
-    | Acme
-    | -- Exceptions
-    | -- | -- NonExistentHashException.php
-    | -- | -- ValidationException.php
-    | -- Repositories
-    | -- | -- BackendServiceProvider.php
-    | -- | -- DbLinkRepository.php
-    | -- | -- LinkRepositoryInterface.php
-    | -- Utilities
-    | -- | -- UrlHasher.php
-    | -- | -- UtilitiesServiceProvider.php
-    | -- Validators
-    | -- | -- LinkValidator.php
-    | -- | -- ValidationException.php
-    | -- | -- Validator.php
-    | -- Object.php
-
-## Validation
-
-https://laracasts.com/lessons/coding-with-intent
-https://github.com/laracasts/Code-With-Intent
 
 ## Remote server configuration
 
@@ -325,10 +266,6 @@ https://laracasts.com/lessons/artisan-tail
     rocketeer deploy:setup
     rocketeer deploy --on="dev"
     rocketeer deploy --on="dev,production"
-
-## Testing
-
-https://laracasts.com/lessons/test-databases-in-memory
 
 ## Setup Bower for frontend components
 
@@ -595,6 +532,66 @@ https://laracasts.com/lessons/laravel-and-gulp
     DB::listen(function($sql){
         Log::info($sql);
     }):
+
+## PSR-4 auto loading
+
+https://laracasts.com/lessons/psr-4-autoloading
+https://laracasts.com/lessons/namespacing-primer
+
+    mkdir app/Acme
+
+### Add to the autoload
+
+    # composer.json
+    "autoload": {
+        ...
+        "psr-4": {
+            "Acme\\" : "app/Acme"
+        }
+    }
+
+### Recompile the autolaod file (and optimize)
+
+    composer dump-autoload -o
+
+## Create BaseModel for validation
+
+    # app/models/BaseModel.php
+    <?php
+    class BaseModel extends Eloquent {
+    }
+
+### Update any models to extend the base instead of Eloquent
+
+    # app/models/User.php
+    <?php
+    ...
+    class User extends BaseModel implements UserInterface, RemindableInterface {
+    ...
+
+## Folder Organization
+
+    | Acme
+    | -- Exceptions
+    | -- | -- NonExistentHashException.php
+    | -- | -- ValidationException.php
+    | -- Repositories
+    | -- | -- BackendServiceProvider.php
+    | -- | -- DbLinkRepository.php
+    | -- | -- LinkRepositoryInterface.php
+    | -- Utilities
+    | -- | -- UrlHasher.php
+    | -- | -- UtilitiesServiceProvider.php
+    | -- Validators
+    | -- | -- LinkValidator.php
+    | -- | -- ValidationException.php
+    | -- | -- Validator.php
+    | -- Object.php
+
+## Validation
+
+https://laracasts.com/lessons/coding-with-intent
+https://github.com/laracasts/Code-With-Intent
 
 ## Named routes
 
