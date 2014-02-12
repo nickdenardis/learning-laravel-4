@@ -90,9 +90,18 @@ https://laracasts.com/lessons/environments-and-configuration
 
 ## Configure the Vagrant file
 
+    # Vagrantfile
+    ...
+    config.vm.provider "virtualbox" do |v|
+        v.customize ["modifyvm", :id, "--memory", "768"]
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    end
+    ...
     "databases" => {
         "create" => ["db_name"]
     },
+    ...
 
 ## Add the local host info
 
