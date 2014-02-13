@@ -540,7 +540,7 @@ https://laracasts.com/lessons/laravel-and-gulp
     # app/routes.php
     DB::listen(function($sql){
         Log::info($sql);
-    }):
+    });
 
 ## PSR-4 auto loading
 
