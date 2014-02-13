@@ -115,19 +115,19 @@ https://laracasts.com/lessons/environments-and-configuration
 * http://laravel.com/docs/testing
 * https://packagist.org/packages/doctrine/dbal (If renaming columns in migrations)
 
-```json
-    # composer.json
-    "require": {
-        "laravel/framework": "4.1.*",
-        "doctrine/dbal": "~2.3"
-    },
-    "require-dev":{
-        "way/generators": "dev-master",
-        "phpunit/phpunit": "3.7.*",
-        "mockery/mockery": "0.7.*",
-        "itsgoingd/clockwork": "1.*",
-        "fzaninotto/faker": "1.4.*@dev"
-    },
+```
+# composer.json
+"require": {
+    "laravel/framework": "4.1.*",
+    "doctrine/dbal": "~2.3"
+},
+"require-dev":{
+    "way/generators": "dev-master",
+    "phpunit/phpunit": "3.7.*",
+    "mockery/mockery": "0.7.*",
+    "itsgoingd/clockwork": "1.*",
+    "fzaninotto/faker": "1.4.*@dev"
+},
 ```
 
 ### Update the vendor directory
@@ -540,7 +540,7 @@ https://laracasts.com/lessons/laravel-and-gulp
     # app/routes.php
     DB::listen(function($sql){
         Log::info($sql);
-    }):
+    });
 
 ## PSR-4 auto loading
 
