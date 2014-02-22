@@ -169,6 +169,9 @@ https://laracasts.com/lessons/environments-and-configuration
             {
                 Event::fire('clockwork.controller.end');
             });
+
+            // Prevent cross site scripting
+            $this->beforeFilter('csrf', array('on' => array('post', 'delete')));
         }
         ...
     }
