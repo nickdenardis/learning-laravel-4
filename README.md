@@ -1238,10 +1238,10 @@ We can setup a backend service provider to bind all of our repositories
 
     # Run -> Edit Configuration
     Alt Config file: /Users/nickdenardis/Sites/go/phpunit.xml
-    Intrepretor options: -d auto_prepend_file=/Users/nickdenardis/Sites/go/vendor/autoload.php
+    Interpreter options: -d auto_prepend_file=/Users/nickdenardis/Sites/go/vendor/autoload.php
     Working directory: /Users/nickdenardis/Sites/go
 
-## Testing HTTP respones, difference in types
+## Testing HTTP responses, difference in types
 
     $crawler = $this->client->request('GET', '/'); // Symfony\Component\DomCrawler\Crawler
     $response = $this->call('GET', '/'); // Illuminate\Http\Response
@@ -1264,3 +1264,8 @@ We can setup a backend service provider to bind all of our repositories
 ### Modify the magration file
 
     # app/database/migrations/....php
+
+
+# View Presenters
+
+Adds the ability to take the logic of view items outside of the model and into an indepenant class.
